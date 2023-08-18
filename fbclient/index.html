@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+</head>
+
+<body>
+
+  <button id="sign-in-button" onclick="submitPhoneNumberAuth()">
+    SIGN IN WITH PHONE
+  </button>
+
+  <br>
+  <div id="recaptcha-container"></div>
+  <br>
+
+  <div>
+    <div>Token: </div>
+
+    <br>
+    <div id="token-container"></div>
+    <br>
+  </div>
+
+  <div>
+    <div>Metadata: </div>
+    <br>
+    <div id="metadata-container"></div>
+    <br>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-auth.js"></script>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "",
+      authDomain: "",
+      databaseURL: "",
+      projectId: "",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: ""
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    firebase.auth().settings.appVerificationDisabledForTesting = true;
+    var appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+
+    function submitPhoneNumberAuth() {
+      var phoneNumber = "+77777777777";
+      var testVerificationCode = "777777";
+      firebase
+        .auth()
+        .signInWithPhoneNumber(phoneNumber, appVerifier)
+        .then(function (confirmationResult) {
+          return confirmationResult.confirm(testVerificationCode)
+        })
+        .then(function (result) {
+          var user = result.user;
+          document.getElementById("token-container").innerHTML = user.ra
+          document.getElementById("metadata-container").innerHTML = '<pre>' + JSON.stringify(user.metadata, null, 4) + '</pre>';
+          console.log(user);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  </script>
+</body>
+
+</html>

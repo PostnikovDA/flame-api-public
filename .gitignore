@@ -1,0 +1,14 @@
+# IDE
+.vscode
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+
+# Distribution / packaging
+*.egg-info/
+
+
+# Other
+deployment/host.py
+test_token
+env
